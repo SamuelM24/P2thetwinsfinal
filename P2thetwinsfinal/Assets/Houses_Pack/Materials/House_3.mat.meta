@@ -1,9 +1,13 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 <<<<<<<< HEAD:P2thetwinsfinal/Assets/Houses_Pack/Materials/House_3.mat.meta
 guid: c6458bb073911f9459c5a7597de907bd
 ========
 guid: 3779002b4fd983d409f96ee6684e9df9
 >>>>>>>> parent of 8cbe59c (Revert "Revert "main menu""):P2thetwinsfinal/Assets/Houses_Pack/Materials/House_2.mat.meta
+=======
+guid: c6458bb073911f9459c5a7597de907bd
+>>>>>>> parent of 84c7926 (main menu)
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 0
