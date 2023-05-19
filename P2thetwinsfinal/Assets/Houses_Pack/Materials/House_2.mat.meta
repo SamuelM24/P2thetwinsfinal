@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:P2thetwinsfinal/Assets/Houses_Pack/Materials/House_2.mat.meta
 guid: 3779002b4fd983d409f96ee6684e9df9
 NativeFormatImporter:
+========
+guid: 9fc0d4010bbf28b4594072e72b8655ab
+DefaultImporter:
+>>>>>>>> parent of 8cbe59c (Revert "Revert "main menu""):P2thetwinsfinal/Assets/Scenes/SampleScene.unity.meta
   externalObjects: {}
   mainObjectFileID: 0
   userData: 
