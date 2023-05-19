@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class Controller : MonoBehaviour
 {
-    private float speed = 5.0f;
-    private float turnSpeed = 75.0f;
-    private float horizontalInput;
-    private float forwardInput;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,9 +13,6 @@ public class Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        horizontalInput = Input.GetAxis("Horizontal");
-        forwardInput = Input.GetAxis("Vertical");
-        transform.Translate(Vector3.forward * Time.deltaTime * speed * forwardInput);
-        transform.Rotate(Vector3.up, turnSpeed * horizontalInput * Time.deltaTime);
+        
     }
 }
