@@ -11,14 +11,21 @@ public class Gun : MonoBehaviour
     public Camera fpsCam;
     public ParticleSystem muzzleFlash;
     public GameObject impactEffect;
+    AudioSource m_shootingSound;
 
     private float nextTimeToFire = 0f;
+
+    void Start()
+    {
+        m_shootingSound = GetComponent<AudioSource>();
+    }
 
     // Update is called once per frame
     void Update()
     {
         if (Input.GetButtonDown("Fire1") && Time.time >= nextTimeToFire)
         {
+            m_shootingSound.Play();
             nextTimeToFire = Time.time + 1f/fireRate;
             Shoot();
         }
