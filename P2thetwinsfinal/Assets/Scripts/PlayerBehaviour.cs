@@ -5,14 +5,24 @@ using UnityEngine;
 public class PlayerBehaviour : MonoBehaviour
 {
     [SerializeField] HealthBar _healthbar;
-    // Start is called before the first frame update
-    void Start()
+
+    private void OnTriggerEnter(Collider other)
     {
-        
+        if (other.CompareTag("Enemy"))
+        {
+            EnemyAttack();
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void EnemyAttack()
+    {
+        int damage = 20;
+        GameManager.gameManager._playerHealth.DmgUnit(damage);
+        _healthbar.SetHealth(GameManager.gameManager._playerHealth.Health);
+    }
+
+// Update is called once per frame
+void Update()
     {
         if (Input.GetKeyDown(KeyCode.P))
         {

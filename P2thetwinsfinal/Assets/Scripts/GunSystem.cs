@@ -3,6 +3,8 @@ using TMPro;
 
 public class GunSystem : MonoBehaviour
 {
+    AudioSource m_shootingSound;
+
     //Gun stats
     public int damage;
     public float timeBetweenShooting, spread, range, reloadTime, timeBetweenShots;
@@ -48,9 +50,11 @@ public class GunSystem : MonoBehaviour
         //Shoot
         if (readyToShoot && shooting && !reloading && bulletsLeft > 0)
         {
+            m_shootingSound.Play();
             bulletsShot = bulletsPerTap;
             Shoot();
         }
+
     }
 
     private void Shoot()
@@ -64,7 +68,14 @@ public class GunSystem : MonoBehaviour
         //Calculate Direction with Spread
         Vector3 direction = fpsCam.transform.forward + new Vector3(x, y, 0);
 
+        //RayCast
+        if (Physics.Raycast(fpsCam.transform.position, direction, out rayHit, range, whatIsEnemy))
+        {
+            Debug.Log(rayHit.collider.name);
 
+            if (rayHit.collider.CompareTag("Enemy"))
+                rayHit.collider.GetComponent<EnemyAi>().TakeDamage(damage);
+        }
 
         //Graphics
         Instantiate(bulletHoleGraphic, rayHit.point, Quaternion.Euler(0, 180, 0));
@@ -93,5 +104,10 @@ public class GunSystem : MonoBehaviour
     {
         bulletsLeft = magazineSize;
         reloading = false;
+    }
+
+    private void Start()
+    {
+        m_shootingSound = GetComponent<AudioSource>();
     }
 }
