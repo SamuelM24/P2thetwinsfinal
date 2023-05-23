@@ -29,7 +29,9 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.2, y: 1.8, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 84049422616783562}
+  - {fileID: 84049423569490508}
   m_Father: {fileID: 84049422224988053}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -115,8 +117,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 84049422026393363}
-  - {fileID: 84049422616783562}
-  - {fileID: 84049423569490508}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -200,13 +200,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 84049422616783561}
   m_LocalRotation: {x: -0.034765847, y: -0, z: -0, w: 0.99939555}
-  m_LocalPosition: {x: -0.02, y: 1.508, z: 0.021}
-  m_LocalScale: {x: 2.6894, y: 2.6894, z: 2.6894}
+  m_LocalPosition: {x: -0.016666649, y: 0.83777773, z: 0.021003723}
+  m_LocalScale: {x: 2.241166, y: 1.4973246, z: 2.6790502}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4274064366673658079}
-  m_Father: {fileID: 84049422224988053}
-  m_RootOrder: 1
+  m_Father: {fileID: 84049422026393363}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -3.985, y: 0, z: 0}
 --- !u!20 &84049422616783563
 Camera:
@@ -313,13 +313,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 84049423569490509}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.846, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -1.0255557, z: 0}
+  m_LocalScale: {x: 0.83333325, y: 0.5555556, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 84049422224988053}
-  m_RootOrder: 2
+  m_Father: {fileID: 84049422026393363}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &84049422002028646
 PrefabInstance:
@@ -674,6 +674,29 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &84049423065283474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4271614552484406953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2835a9c00fef824da4e08eb3bf5471e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  recoilPosition: {fileID: 4274064366673658079}
+  rotationPoint: {fileID: 4274064366673658079}
+  positionalRecoilSpeed: 1
+  rotationalRecoilSpeed: 1
+  positionalReturnSpeed: 40
+  rotationalReturnSpeed: 35
+  RecoilRotation: {x: 10, y: 5, z: 7}
+  RecoilKickBack: {x: 0.015, y: 0, z: -0.2}
+  RecoilRotationAim: {x: 10, y: 4, z: 6}
+  RecoilKickBackAim: {x: 0.015, y: 0, z: -0.2}
+  aiming: 0
 --- !u!114 &84049423065283475
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -705,7 +728,7 @@ MonoBehaviour:
   camShakeMagnitude: 0.1
   camShakeDuration: 0.1
   text: {fileID: 0}
---- !u!114 &84049423065283474
+--- !u!114 &84049423065283500
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -714,20 +737,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 4271614552484406953}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2835a9c00fef824da4e08eb3bf5471e, type: 3}
+  m_Script: {fileID: 11500000, guid: 899da2e72f99a084793a1a52d65cb538, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  recoilPosition: {fileID: 4274064366673658079}
-  rotationPoint: {fileID: 4274064366673658079}
-  positionalRecoilSpeed: 1
-  rotationalRecoilSpeed: 1
-  positionalReturnSpeed: 40
-  rotationalReturnSpeed: 35
-  RecoilRotation: {x: 10, y: 5, z: 7}
-  RecoilKickBack: {x: 0.015, y: 0, z: -0.2}
-  RecoilRotationAim: {x: 10, y: 4, z: 6}
-  RecoilKickBackAim: {x: 0.015, y: 0, z: -0.2}
-  aiming: 0
+  intensity: 5
+  smooth: 10
 --- !u!114 &84049423065283501
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -749,20 +763,6 @@ MonoBehaviour:
   rotationX: 1
   rotationY: 1
   rotationZ: 1
---- !u!114 &84049423065283500
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4271614552484406953}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 899da2e72f99a084793a1a52d65cb538, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  intensity: 5
-  smooth: 10
 --- !u!114 &84049423065283502
 MonoBehaviour:
   m_ObjectHideFlags: 0
