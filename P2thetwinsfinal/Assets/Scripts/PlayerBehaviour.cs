@@ -24,12 +24,12 @@ public class PlayerBehaviour : MonoBehaviour
 // Update is called once per frame
 void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
+        if (Input.GetKeyDown(KeyCode.B))
         {
             PlayerTakeDmg(20);
             Debug.Log(GameManager.gameManager._playerHealth.Health);
         }
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        if (Input.GetKeyDown(KeyCode.N))
         {
             PlayerHeal(10);
             Debug.Log(GameManager.gameManager._playerHealth.Health);

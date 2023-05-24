@@ -1,81 +1,94 @@
-
+// FloatingHealthBar.cs
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class EnemyAi : MonoBehaviour
 {
     public NavMeshAgent agent;
-
     public Transform player;
-
     public LayerMask whatIsGround, whatIsPlayer;
-
     public float health;
+    public float maxHealth;
 
-    //Patroling
+    // Patroling
     public Vector3 walkPoint;
     bool walkPointSet;
     public float walkPointRange;
 
-    //Attacking
+    // Attacking
     public float timeBetweenAttacks;
     bool alreadyAttacked;
 
-    //States
+    // States
     public float sightRange, attackRange;
     public bool playerInSightRange, playerInAttackRange;
+
+    private int shotsToDie = 5;
+    private int currentShots = 0;
+
+    [SerializeField] FloatingHealthBar healthBar;
 
     private void Awake()
     {
         player = GameObject.Find("FPS").transform;
         agent = GetComponent<NavMeshAgent>();
+        healthBar = GetComponentInChildren<FloatingHealthBar>();
+        maxHealth = health;
+        healthBar.UpdateHealthBar(health, maxHealth);
     }
 
     private void Update()
     {
-        //Check for sight and attack range
+        // Check for sight and attack range
         playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
-        playerInSightRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
+        playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
 
-        if (!playerInSightRange && !playerInAttackRange) Patroling();
-        if (playerInSightRange && !playerInAttackRange) ChasePlayer();
-        if (playerInAttackRange && playerInSightRange) AttackPlayer();
+        if (!playerInSightRange && !playerInAttackRange)
+            Patroling();
+        if (playerInSightRange && !playerInAttackRange)
+            ChasePlayer();
+        if (playerInAttackRange && playerInSightRange)
+            AttackPlayer();
     }
 
     private void Patroling()
     {
-        if (!walkPointSet) SearchWalkPoint();
+        if (!walkPointSet)
+            SearchWalkPoint();
 
         if (walkPointSet)
             agent.SetDestination(walkPoint);
 
         Vector3 distanceToWalkPoint = transform.position - walkPoint;
 
-        //Walkpoint reached
+        // Walkpoint reached
         if (distanceToWalkPoint.magnitude < 1f)
             walkPointSet = false;
     }
 
     private void SearchWalkPoint()
     {
-        //Calculate random pooint in range
+        // Calculate random point in range
         float randomZ = Random.Range(-walkPointRange, walkPointRange);
         float randomX = Random.Range(-walkPointRange, walkPointRange);
 
-        walkPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.x + randomZ);
+        walkPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
 
-            if (Physics.Raycast(walkPoint, -transform.up, 2f, whatIsGround))
+        if (Physics.Raycast(walkPoint, -transform.up, 2f, whatIsPlayer))
             walkPointSet = true;
-
     }
 
     private void ChasePlayer()
     {
         agent.SetDestination(player.position);
     }
+
     private void AttackPlayer()
     {
-        // Make sure enemy doesn't move
+        // Make sure the enemy doesn't move
         agent.SetDestination(transform.position);
 
         transform.LookAt(player);
@@ -83,35 +96,49 @@ public class EnemyAi : MonoBehaviour
         if (!alreadyAttacked)
         {
             // Attack code here
-
-            // Add your custom attack behavior instead of the projectile
+            ShootPlayer();
 
             alreadyAttacked = true;
             Invoke(nameof(ResetAttack), timeBetweenAttacks);
         }
     }
+
+    private void ShootPlayer()
+    {
+        // Logic for shooting the player
+        currentShots++;
+
+        if (currentShots >= shotsToDie)
+        {
+            Die();
+        }
+        else
+        {
+            // Update health bar
+            float damageAmount = maxHealth / shotsToDie;
+            health -= damageAmount;
+            healthBar.UpdateHealthBar(health, maxHealth);
+        }
+    }
+
     private void ResetAttack()
     {
         alreadyAttacked = false;
     }
 
-    public void TakeDamage(int damage)
+    private void Die()
     {
-        health -= damage;
-
-        if (health <= 0) Invoke(nameof(DestroyEnemy), .5f);
-    }
-
-    private void DestroyEnemy()
-    {
+        // Enemy death logic
         Destroy(gameObject);
     }
 
-    private void OnDrawGizmosSelected()
+    public void TakeDamage(float damageAmount)
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, attackRange);
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, sightRange);
+        health -= damageAmount;
+        healthBar.UpdateHealthBar(health, maxHealth);
+        if (health <= 0)
+        {
+            Die();
+        }
     }
 }
