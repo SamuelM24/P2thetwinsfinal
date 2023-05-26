@@ -2998,7 +2998,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1fcb75feba11db4b86e835d1231a2a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firstLevel: GAME#1
+  firstLevel: 
   optionsScreen: {fileID: 801447207}
 --- !u!1 &1723306182
 GameObject:
