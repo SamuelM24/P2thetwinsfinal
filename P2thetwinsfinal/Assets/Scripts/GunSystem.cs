@@ -34,10 +34,13 @@ public class GunSystem : MonoBehaviour
 
     private void Update()
     {
-        MyInput();
+        if (!PauseMenu.isPaused)
+        {
+            MyInput();
 
-        //SetText
-        text.SetText(bulletsLeft + " / " + magazineSize);
+            //SetText
+            text.SetText(bulletsLeft + " / " + magazineSize);
+        }
     }
 
     private void MyInput()

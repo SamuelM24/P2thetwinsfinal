@@ -12,8 +12,6 @@ public class AdvancedWeaponRecoil : MonoBehaviour
     [Header("Speed Settings:")]
     public float positionalRecoilSpeed = 8f;
     public float rotationalRecoilSpeed = 8f;
-    [Space(10)]
-
     public float positionalReturnSpeed = 18f;
     public float rotationalReturnSpeed = 38f;
     [Space(10)]
@@ -21,7 +19,6 @@ public class AdvancedWeaponRecoil : MonoBehaviour
     [Header("Amount Settings:")]
     public Vector3 RecoilRotation = new Vector3(10, 5, 7);
     public Vector3 RecoilKickBack = new Vector3(0.015f, 0f, -0.2f);
-    [Space(10)]
     public Vector3 RecoilRotationAim = new Vector3(10, 4, 6);
     public Vector3 RecoilKickBackAim = new Vector3(0.015f, 0f, -0.2f);
     [Space(10)]
@@ -32,19 +29,15 @@ public class AdvancedWeaponRecoil : MonoBehaviour
     [Header("State:")]
     public bool aiming;
 
-    private void FixedUpdate()
+    private void Update()
     {
         rotationalRecoil = Vector3.Lerp(rotationalRecoil, Vector3.zero, rotationalReturnSpeed * Time.deltaTime);
         positionalRecoil = Vector3.Lerp(positionalRecoil, Vector3.zero, positionalReturnSpeed * Time.deltaTime);
 
-        recoilPosition.localPosition = Vector3.Slerp(recoilPosition.localPosition, positionalRecoil, positionalRecoilSpeed * Time.fixedDeltaTime);
-        Rot = Vector3.Slerp(Rot, rotationalRecoil, rotationalRecoilSpeed * Time.fixedDeltaTime);
+        recoilPosition.localPosition = Vector3.Slerp(recoilPosition.localPosition, positionalRecoil, positionalRecoilSpeed * Time.deltaTime);
+        Rot = Vector3.Slerp(Rot, rotationalRecoil, rotationalRecoilSpeed * Time.deltaTime);
         rotationPoint.localRotation = Quaternion.Euler(Rot);
 
-    }
-    // Update is called once per frame
-    void Update()
-    {
         if (Input.GetButtonDown("Fire1"))
         {
             Fire();
@@ -71,6 +64,5 @@ public class AdvancedWeaponRecoil : MonoBehaviour
             rotationalRecoil += new Vector3(-RecoilRotation.x, Random.Range(-RecoilRotation.y, RecoilRotation.y), Random.Range(-RecoilRotation.z, RecoilRotation.z));
             positionalRecoil += new Vector3(Random.Range(-RecoilKickBack.x, RecoilKickBack.x), Random.Range(-RecoilKickBack.y, RecoilKickBack.y), RecoilKickBack.z);
         }
-
     }
 }
