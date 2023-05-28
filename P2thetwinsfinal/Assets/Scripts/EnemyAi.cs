@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UI;
 
 public class EnemyAi : MonoBehaviour
 {
@@ -29,15 +28,11 @@ public class EnemyAi : MonoBehaviour
     private int shotsToDie = 5;
     private int currentShots = 0;
 
-    [SerializeField] FloatingHealthBar healthBar;
-
     private void Awake()
     {
         player = GameObject.Find("FPS").transform;
         agent = GetComponent<NavMeshAgent>();
-        healthBar = GetComponentInChildren<FloatingHealthBar>();
         maxHealth = health;
-        healthBar.UpdateHealthBar(health, maxHealth);
     }
 
     private void Update()
@@ -114,10 +109,9 @@ public class EnemyAi : MonoBehaviour
         }
         else
         {
-            // Update health bar
+            // Update health
             float damageAmount = maxHealth / shotsToDie;
             health -= damageAmount;
-            healthBar.UpdateHealthBar(health, maxHealth);
         }
     }
 
@@ -135,7 +129,6 @@ public class EnemyAi : MonoBehaviour
     public void TakeDamage(float damageAmount)
     {
         health -= damageAmount;
-        healthBar.UpdateHealthBar(health, maxHealth);
         if (health <= 0)
         {
             Die();
