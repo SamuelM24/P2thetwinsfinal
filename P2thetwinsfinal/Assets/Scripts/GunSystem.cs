@@ -3,6 +3,7 @@ using TMPro;
 
 public class GunSystem : MonoBehaviour
 {
+
     AudioSource m_shootingSound;
 
     //Gun stats
@@ -34,10 +35,13 @@ public class GunSystem : MonoBehaviour
 
     private void Update()
     {
-        MyInput();
+        if (!PauseMenu.isPaused)
+        {
+            MyInput();
 
-        //SetText
-        text.SetText(bulletsLeft + " / " + magazineSize);
+            //SetText
+            text.SetText(bulletsLeft + " / " + magazineSize);
+        }
     }
 
     private void MyInput()
