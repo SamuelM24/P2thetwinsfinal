@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public CharacterController controller;
+    public Rigidbody rb; // Add a reference to the Rigidbody component
 
     public float speed = 12f;
     public float gravity = -9.81f;
@@ -19,6 +20,12 @@ public class PlayerMovement : MonoBehaviour
 
     Vector3 velocity;
     bool isGrounded;
+
+    private void Start()
+    {
+        rb = GetComponent<Rigidbody>(); // Get the reference to the Rigidbody component
+        rb.drag = 10f; // Set the drag value to reduce pushing effect
+    }
 
     // Update is called once per frame
     void Update()
@@ -35,7 +42,7 @@ public class PlayerMovement : MonoBehaviour
 
         Vector3 move = transform.right * x + transform.forward * z;
 
-        if (isSprinting == true)
+        if (isSprinting)
         {
             move *= sprintingMultiplier;
         }

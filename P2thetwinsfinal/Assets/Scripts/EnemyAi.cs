@@ -1,6 +1,3 @@
-// FloatingHealthBar.cs
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -25,19 +22,23 @@ public class EnemyAi : MonoBehaviour
     public float sightRange, attackRange;
     public bool playerInSightRange, playerInAttackRange;
 
-    private int shotsToDie = 5;
-    private int currentShots = 0;
+    private PlayerHealth playerHealth;
+    private int damageAmount = 10;
+
+    private float attackTimer = 0f;
+    public float attackDuration = 1f;
+    public int damagePerSecond = 10;
 
     private void Awake()
     {
-        player = GameObject.Find("FPS").transform;
         agent = GetComponent<NavMeshAgent>();
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+        playerHealth = player.GetComponent<PlayerHealth>();
         maxHealth = health;
     }
 
     private void Update()
     {
-        // Check for sight and attack range
         playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
         playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
 
@@ -59,79 +60,73 @@ public class EnemyAi : MonoBehaviour
 
         Vector3 distanceToWalkPoint = transform.position - walkPoint;
 
-        // Walkpoint reached
         if (distanceToWalkPoint.magnitude < 1f)
             walkPointSet = false;
     }
 
     private void SearchWalkPoint()
     {
-        // Calculate random point in range
         float randomZ = Random.Range(-walkPointRange, walkPointRange);
         float randomX = Random.Range(-walkPointRange, walkPointRange);
 
         walkPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
 
-        if (Physics.Raycast(walkPoint, -transform.up, 2f, whatIsPlayer))
+        if (Physics.Raycast(walkPoint, -transform.up, 2f, whatIsGround))
             walkPointSet = true;
     }
 
     private void ChasePlayer()
     {
-        agent.SetDestination(player.position);
+        float playerDistance = Vector3.Distance(transform.position, player.position);
+
+        if (playerDistance <= attackRange)
+        {
+            // Start moving towards the player immediately
+            agent.SetDestination(player.position);
+        }
+        else if (playerDistance <= sightRange)
+        {
+            // Start moving towards the player within attack range
+            Vector3 targetPosition = player.position + (transform.position - player.position).normalized * (playerDistance - attackRange);
+            agent.SetDestination(targetPosition);
+        }
     }
+
 
     private void AttackPlayer()
     {
-        // Make sure the enemy doesn't move
         agent.SetDestination(transform.position);
-
         transform.LookAt(player);
 
         if (!alreadyAttacked)
         {
-            // Attack code here
-            ShootPlayer();
-
+            // Start attack
+            attackTimer = 0f;
             alreadyAttacked = true;
-            Invoke(nameof(ResetAttack), timeBetweenAttacks);
         }
-    }
 
-    private void ShootPlayer()
-    {
-        // Logic for shooting the player
-        currentShots++;
-
-        if (currentShots >= shotsToDie)
+        // Gradually decrease player's health over time during the attack
+        attackTimer += Time.deltaTime;
+        if (attackTimer >= attackDuration)
         {
-            Die();
-        }
-        else
-        {
-            // Update health
-            float damageAmount = maxHealth / shotsToDie;
-            health -= damageAmount;
+            int damageAmount = damagePerSecond * (int)attackDuration;
+            playerHealth.TakeDamage(damageAmount);
+            alreadyAttacked = false;
         }
     }
 
-    private void ResetAttack()
-    {
-        alreadyAttacked = false;
-    }
-
-    private void Die()
-    {
-        // Enemy death logic
-        Destroy(gameObject);
-    }
-
-    public void TakeDamage(float damageAmount)
+    public void TakeDamage(int damageAmount)
     {
         health -= damageAmount;
         if (health <= 0)
         {
             Die();
         }
+    }
+
+    private void Die()
+    {
+        // Enemy death logic
+        Destroy(gameObject);
     }
 }

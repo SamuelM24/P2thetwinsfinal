@@ -1,23 +1,29 @@
-using System.Collections;
-using System.Collections.Generic;
+// Enemy.cs
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] float health, maxHealth = 3f;
+    public int maxHealth = 100;
+    private int currentHealth;
 
     private void Start()
     {
-        health = maxHealth;
+        currentHealth = maxHealth;
     }
 
-    public void TakeDamage(float damageAmount)
+    public void TakeDamage(int damageAmount)
     {
-        health -= damageAmount; // 3 -> 2 -> 1 -> 0 = Enemy Has Died
+        currentHealth -= damageAmount;
 
-        if(health <= 0)
+        if (currentHealth <= 0)
         {
-            Destroy(gameObject);
+            Die();
         }
+    }
+
+    private void Die()
+    {
+        // Death logic for the enemy
+        Destroy(gameObject);
     }
 }

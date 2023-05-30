@@ -3,6 +3,7 @@ using TMPro;
 
 public class GunSystem : MonoBehaviour
 {
+
     AudioSource m_shootingSound;
 
     //Gun stats
