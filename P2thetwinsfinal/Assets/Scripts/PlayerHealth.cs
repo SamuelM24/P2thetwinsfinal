@@ -46,6 +46,11 @@ public class PlayerHealth : MonoBehaviour
         respawnMenu.ShowRespawnMenu();
         EnableMenu();
         respawnMenuCamera.gameObject.SetActive(true);
+
+        if (respawnMenu != null)
+        {
+            respawnMenu.ShowRespawnMenu();
+        }
     }
     private void EnableMenu()
     {

@@ -1,41 +1,56 @@
-using Unity.VisualScripting;
 using UnityEngine;
+using TMPro;
 
 public class Gun : MonoBehaviour
 {
-    public float damage = 10f;
+    public int damage = 10;
     public float range = 100f;
     public float fireRate = 15f;
     public float impactForce = 30f;
+    public int maxAmmo = 30;
+    public int bulletsPerTap = 1;
 
     public Camera fpsCam;
     public ParticleSystem muzzleFlash;
-    AudioSource m_shootingSound;
+    public TextMeshProUGUI ammoText;
 
-    private float nextTimeToFire = 0f;
+    private int currentAmmo;
+    private bool canShoot = true;
 
-    void Start()
+    private void Start()
     {
-        m_shootingSound = GetComponent<AudioSource>();
+        currentAmmo = maxAmmo;
+        UpdateAmmoText();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (!PauseMenu.isPaused)
         {
-            if (Input.GetButtonDown("Fire1") && Time.time >= nextTimeToFire)
+            if (Input.GetButtonDown("Fire1") && canShoot)
             {
-                m_shootingSound.Play();
-                nextTimeToFire = Time.time + 1f / fireRate;
                 Shoot();
+            }
+
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                Reload();
             }
         }
     }
 
-    void Shoot()
+    private void Shoot()
     {
+        if (currentAmmo <= 0)
+        {
+            // Out of ammo
+            return;
+        }
+
         muzzleFlash.Play();
+
+        currentAmmo -= bulletsPerTap;
+        UpdateAmmoText();
 
         RaycastHit hit;
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
@@ -53,5 +68,34 @@ public class Gun : MonoBehaviour
                 hit.rigidbody.AddForce(-hit.normal * impactForce);
             }
         }
+
+        if (currentAmmo <= 0)
+        {
+            // Out of ammo after this shot
+            canShoot = false;
+        }
+
+        if (currentAmmo <= 0 && !canShoot)
+        {
+            Invoke(nameof(EnableShooting), 1f / fireRate);
+        }
+    }
+
+    private void EnableShooting()
+    {
+        canShoot = true;
+    }
+
+
+    private void Reload()
+    {
+        int ammoToReload = maxAmmo - currentAmmo;
+        currentAmmo += ammoToReload;
+        UpdateAmmoText();
+    }
+
+    private void UpdateAmmoText()
+    {
+        ammoText.SetText(currentAmmo + " / " + maxAmmo);
     }
 }

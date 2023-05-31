@@ -4,34 +4,30 @@ using UnityEngine.SceneManagement;
 public class RespawnMenu : MonoBehaviour
 {
     public GameObject respawnMenuUI;
-    public GameObject optionMenu;
-    public GameObject mainMenu;
+    public GameObject optionMenu; // If you have an options menu
+    public GameObject mainMenu; // If you have a main menu
 
-    private void Start()
-    {
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.Confined;
-    }
     public void ShowRespawnMenu()
     {
-        Time.timeScale = 0f; // Freeze the game
         respawnMenuUI.SetActive(true);
+        Cursor.visible = true; // Show the cursor
+        Cursor.lockState = CursorLockMode.Confined; // Confine the cursor within the game window
     }
 
-    public void RestartGame()
+    public void HideRespawnMenu()
+    {
+        respawnMenuUI.SetActive(false);
+        Cursor.visible = false; // Hide the cursor
+        Cursor.lockState = CursorLockMode.Locked; // Lock the cursor to the center of the screen
+    }
+
+    public void Respawn()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        Time.timeScale = 1f; // Unfreeze the game
     }
 
     public void GoToMainMenu()
     {
-        SceneManager.LoadScene("MainMenu"); // Replace "MainMenu" with the actual scene name of your main menu
-        Time.timeScale = 1f; // Unfreeze the game
-    }
-
-    public void OpenOptionsMenu()
-    {
-        optionMenu.SetActive(true);
+        SceneManager.LoadScene("Main Menu");
     }
 }
