@@ -13,14 +13,18 @@ public class Gun : MonoBehaviour
     public Camera fpsCam;
     public ParticleSystem muzzleFlash;
     public TextMeshProUGUI ammoText;
+    public AudioClip shootingSound;
 
     private int currentAmmo;
     private bool canShoot = true;
+    private AudioSource audioSource;
 
     private void Start()
     {
         currentAmmo = maxAmmo;
         UpdateAmmoText();
+
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -48,6 +52,7 @@ public class Gun : MonoBehaviour
         }
 
         muzzleFlash.Play();
+        audioSource.PlayOneShot(shootingSound);
 
         currentAmmo -= bulletsPerTap;
         UpdateAmmoText();

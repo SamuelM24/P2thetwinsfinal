@@ -3,14 +3,13 @@ using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
-    public int maxHealth = 100; // Adjust the maxHealth value to 300 for 30 hits
+    public int maxHealth = 100;
     public int currentHealth;
     public Slider healthBar;
 
     // Reference to the RespawnMenu script
     public RespawnMenu respawnMenu;
-    public Camera respawnMenuCamera;
-    public GameObject respawnMenuUI;
+    public GameObject[] enemies;
 
     private void Start()
     {
@@ -42,25 +41,24 @@ public class PlayerHealth : MonoBehaviour
         Debug.Log("Player died");
         Destroy(gameObject);
 
-        // Call the ShowRespawnMenu method on the RespawnMenu script
-        respawnMenu.ShowRespawnMenu();
-        EnableMenu();
-        respawnMenuCamera.gameObject.SetActive(true);
-
-        if (respawnMenu != null)
+        // Disable enemy GameObjects
+        foreach (var enemy in enemies)
         {
-            respawnMenu.ShowRespawnMenu();
+            enemy.SetActive(false);
         }
+
+        // Pause the game, except for the respawn menu
+        Time.timeScale = 0f;
+        respawnMenu.ShowRespawnMenu();
     }
-    private void EnableMenu()
-    {
-        respawnMenuUI.SetActive(true);
-    }
+
+
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            TakeDamage(10); // Decrease health by 10 when hit by an enemy
+            TakeDamage(10);
         }
     }
 }

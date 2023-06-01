@@ -9,6 +9,7 @@ public class FloatingHealthBar : MonoBehaviour
     [SerializeField] private Camera camera;
     [SerializeField] private Transform target;
     [SerializeField] private Vector3 offset;
+
     public void UpdateHealthBar(float currentValue, float maxValue)
     {
         slider.value = currentValue / maxValue;
@@ -17,7 +18,9 @@ public class FloatingHealthBar : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.rotation = camera.transform.rotation;
-        target.position = target.position + offset;
+        if (camera != null)
+        {
+            transform.rotation = camera.transform.rotation;
+        }
     }
 }

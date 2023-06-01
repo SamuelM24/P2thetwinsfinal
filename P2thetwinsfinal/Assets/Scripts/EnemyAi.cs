@@ -8,6 +8,7 @@ public class EnemyAi : MonoBehaviour
     public LayerMask whatIsGround, whatIsPlayer;
     public float health;
     public float maxHealth;
+    public float rotationSpeed = 5f;
 
     // Patroling
     public Vector3 walkPoint;
@@ -90,6 +91,9 @@ public class EnemyAi : MonoBehaviour
             Vector3 targetPosition = player.position + (transform.position - player.position).normalized * (playerDistance - attackRange);
             agent.SetDestination(targetPosition);
         }
+
+        Quaternion targetRotation = Quaternion.LookRotation(player.position - transform.position);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
     }
 
 
@@ -128,5 +132,20 @@ public class EnemyAi : MonoBehaviour
     {
         // Enemy death logic
         Destroy(gameObject);
+
+        // Check if the player is dead and disable the enemy AI
+        if (playerHealth.currentHealth <= 0)
+        {
+            DisableAI();
+        }
+    }
+
+    private void DisableAI()
+    {
+        // Disable the NavMeshAgent component to stop the enemy from moving
+        agent.enabled = false;
+
+        // Disable the EnemyAi script component to stop the enemy's AI behavior
+        this.enabled = false;
     }
 }
