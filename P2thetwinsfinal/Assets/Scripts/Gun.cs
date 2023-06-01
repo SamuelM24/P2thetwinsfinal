@@ -5,18 +5,28 @@ public class Gun : MonoBehaviour
 {
     public int damage = 10;
     public float range = 100f;
-    public float fireRate = 15f;
+    public float fireRate = 1f;
     public float impactForce = 30f;
     public int maxAmmo = 30;
     public int bulletsPerTap = 1;
-
+    public bool allowButtonHold;
+    int bulletsLeft, bulletsShot;
     public Camera fpsCam;
     public ParticleSystem muzzleFlash;
     public TextMeshProUGUI ammoText;
     public AudioClip shootingSound;
+    public int magazineSize = 10;
+    public float timeBetweenShooting = 0.2f;
+    public float timeBetweenShots = 0.1f;
+
 
     private int currentAmmo;
     private bool canShoot = true;
+    private bool shooting = false;
+    private bool reloading = false;
+    private bool readyToShoot = true;
+    private AudioSource m_shootingSound;
+
     private AudioSource audioSource;
 
     private void Start()
@@ -31,17 +41,21 @@ public class Gun : MonoBehaviour
     {
         if (!PauseMenu.isPaused)
         {
-            if (Input.GetButtonDown("Fire1") && canShoot)
+            MyInput();
             {
-                Shoot();
-            }
+                if (Input.GetButtonDown("Fire1") && canShoot)
+                {
+                    Shoot();
+                }
 
-            if (Input.GetKeyDown(KeyCode.R))
-            {
-                Reload();
+                if (Input.GetKeyDown(KeyCode.R))
+                {
+                    Reload();
+                }
             }
         }
     }
+
 
     private void Shoot()
     {
@@ -102,5 +116,38 @@ public class Gun : MonoBehaviour
     private void UpdateAmmoText()
     {
         ammoText.SetText(currentAmmo + " / " + maxAmmo);
+    }
+
+    private void MyInput()
+    {
+        if (Input.GetKey(KeyCode.Mouse0) && gameObject.name == "SubmachineGun")
+        {
+            if (allowButtonHold)
+            {
+                if (canShoot)
+                {
+                    Shoot();
+                }
+            }
+            else
+            {
+                if (readyToShoot)
+                {
+                    Shoot();
+                }
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.Mouse0) && gameObject.name != "SubmachineGun")
+        {
+            if (readyToShoot)
+            {
+                Shoot();
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Reload();
+        }
     }
 }

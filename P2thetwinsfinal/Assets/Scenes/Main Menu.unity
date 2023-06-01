@@ -1386,7 +1386,11 @@ MonoBehaviour:
     R: Reload
 
 
-    Space: Jump'
+    Space: Jump
+
+
+    Weapon Switching: 
+    1 & 2'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3c36c2c668aca404b8b405c58ce4e477, type: 2}
   m_sharedMaterial: {fileID: -8830132089927174169, guid: 3c36c2c668aca404b8b405c58ce4e477, type: 2}
@@ -1449,7 +1453,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -91.04663, y: 0, z: -224.23096, w: 0}
+  m_margin: {x: -91.04663, y: 0, z: -502.3357, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
